@@ -28,11 +28,12 @@ class PaymentController {
 
       let transactionToken = transaction.token;
       let transactionRedirectUrl = transaction.redirect_url;
-      res.status(200).json({
+      res.status(201).json({
         token: transactionToken,
         redirect_url: transactionRedirectUrl,
       });
     } catch (err) {
+      console.log(err,"dari postpayment")
       next(err);
     }
   }
@@ -65,17 +66,23 @@ class PaymentController {
 
       // create reusable transporter object using the default SMTP transport
       let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: "uriel.lubowitz8@ethereal.email", // ethereal user
-          pass: "DTd8AhjXEyUGngVbdH", // ethereal password
-        },
+        // host: "smtp.ethereal.email",
+        // port: 587,
+        host:"smtp.gmail.com",
+        port:465,
+        secure: true, // true for 465, false for other ports
+        // auth: {
+        //   user: "uriel.lubowitz8@ethereal.email", // ethereal user
+        //   pass: "DTd8AhjXEyUGngVbdH", // ethereal password
+        // },
+        auth:{
+          user: "nakanomiku45@gmail.com",
+          pass:"odmpmnlbmjvkworl"
+        }
       });
 
       const msg = {
-        from: '"ShiraPort" <admin@shiraport.com>', // sender address
+        from: '"shiraport" <admin@shiraport.com>', // sender address
         to: `${payment.email}`, // list of receivers
         subject: "Thank you for your support!", // Subject line
         html: emailTemplate(payment.username), // html body
@@ -94,6 +101,7 @@ class PaymentController {
         message: "Payment status updated",
       });
     } catch (err) {
+      console.log(err,"dari update")
       next(err);
     }
   }

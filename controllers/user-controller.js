@@ -6,7 +6,8 @@ class UserController {
   static async register(req, res, next) {
     try {
       const { username, email, password } = req.body;
-      const newUser = await User.create({ username,email, password });
+
+      const newUser = await User.create({ username, email, password });
       res.status(201).json({ id: newUser.id, email: newUser.email });
     } catch (err) {
       next(err);
@@ -40,16 +41,22 @@ class UserController {
       const payload = {
         id: user.id,
         email: user.email,
-        accountStatus: user.accountStatus
+        accountStatus: user.accountStatus,
       };
 
       const token = generateTokenFromPayload(payload);
 
-      res.status(200).json({ access_token: token, accountStatus:user.accountStatus, username:user.username });
+      res
+        .status(200)
+        .json({
+          access_token: token,
+          accountStatus: user.accountStatus,
+          username: user.username,
+        });
     } catch (err) {
       next(err);
     }
   }
 }
 
-module.exports=UserController
+module.exports = UserController;
